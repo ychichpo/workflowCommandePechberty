@@ -1,0 +1,49 @@
+framework:
+  workflows:
+    invoice_status:
+      type: state_machine
+      audit_trail:
+        enabled: true
+      marking_store:
+        type: 'method'
+        property: 'status'
+      supports:
+        - App\Entity\Commande
+      initial_marking: 'En cours de préparation'
+      places:
+        - 'En cours de préparation'
+        - 'Prête'
+        - 'Prise en charge par le transporteur'
+        - 'Colis non conforme'
+        - 'Annulée'
+        - 'En cours de Livraison'
+        - 'Adresse introuvable'
+        - 'Livrée'
+      transitions:
+        to_prepar:
+          from: 'Colis non conforme'
+          to: 'En cours de préparation'
+        to_prete:
+          from: 'En cours de préparation'
+          to: 'Prête'
+        to_priseEnCharge:
+          from: 'Prête'
+          to: 'Prise en charge par le transporteur'
+        to_colisNonConform:
+          from: 'Prête'
+          to: 'Colis non conforme'
+        to_annulee:
+          from: [ 'En cours de préparation','Prête' ]
+          to: 'Annulée'
+        to_enCoursLivraison:
+          from: 'Prise en charge par le transporteur'
+          to: 'En cours de Livraison'
+        to_livree:
+          from: 'En cours de Livraison'
+          to: 'Livrée'
+        to_adresseIntrouvable:
+          from: 'En cours de Livraison'
+          to: 'Adresse introuvable'
+
+
+

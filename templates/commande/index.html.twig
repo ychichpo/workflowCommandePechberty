@@ -1,0 +1,71 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Commandes App{% endblock %}
+
+{% block body %}
+
+    <div class="row mt-2">
+        <div class="col-12">
+            {% for label, messages in app.flashes(['success']) %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                        <p>{{ message }}</p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="card mt-5">
+        <div class="card-header">Liste des commandes</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 mb-2 d-flex justify-content-end">
+                    <a href="{{ path('app_commande_generate') }}" class="btn btn-primary btn-lg">Générer</a>
+                </div>
+                <hr/>
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Numero</th>
+                                <th>Date</th>
+                                <th>Adresse</th>
+                                <th>Statut</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for commande in commandes %}
+                                <tr>
+                                    <td>{{ commande.numero }}</td>
+                                    <td>{{ commande.UpdatedAt|date("d/m/Y") }}</td>
+                                    <td>{{ commande.adresse }} €</td>
+                                    <td>{{ commande.status }}</td>
+                                    <td>
+                                        <a href="{{ path('app_commande_details',{id:commande.id}) }}" class="btn btn-secondary">Détails</a>
+
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="5">
+                                        <div class="alert alert-warning">
+                                            Pas de commandes disponibles
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer"></div>
+    </div>
+{% endblock %}
+
